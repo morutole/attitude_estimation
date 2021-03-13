@@ -30,6 +30,7 @@ def accl_setup():
         bus.write_byte_data(accl_address, 0x11, 0x00)
 
     except IOError as e:
+        print("accl setup error")
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
     time.sleep(0.5)
 
@@ -48,6 +49,7 @@ def gyro_setup():
         #		0x00(00)	Normal mode, Sleep duration = 2ms
         bus.write_byte_data(gyro_address, 0x11, 0x00)
     except IOError as e:
+        print("gyro setup error")
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
     time.sleep(0.5)
 
@@ -74,6 +76,7 @@ def mag_setup():
         #		0x0F(15)	No. of Repetitions for Z-Axis = 15
         bus.write_byte_data(mag_address, 0x52, 0x0F)
     except IOError as e:
+        print("mag setup error")
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
     time.sleep(0.5)
 
@@ -103,6 +106,7 @@ def get_accl_value():
         return xAccl, yAccl, zAccl
     
     except IOError as e:
+        print("accl get error")
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
         return 100, 100, 100
 
@@ -127,6 +131,7 @@ def get_gyro_value():
         return xGyro, yGyro, zGyro
 
     except IOError as e:
+        print("gyro get error")
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
         return 100, 100, 100
 
@@ -151,21 +156,24 @@ def get_mag_value():
         return xMag, yMag, zMag
 
     except IOError as e:
+        print("mag get error")
         print("I/O error({0}): {1}".format(e.errno, e.strerror))
         return 100, 100, 100
 
 if __name__ == "__main__":
     bmx_setup()
-    xAccl, yAccl, zAccl = get_accl_value() 
-    xGyro, yGyro, zGyro = get_gyro_value()
-    xMag, yMag, zMag = get_mag_value()
+    while(True):
+        xAccl, yAccl, zAccl = get_accl_value() 
+        xGyro, yGyro, zGyro = get_gyro_value()
+        xMag, yMag, zMag = get_mag_value()
 
-    print("Acceleration in X-Axis: ", xAccl)
-    print("Acceleration in Y-Axis: ", yAccl)
-    print("Acceleration in Z-Axis: ", zAccl)
-    print("X-Axis of Rotation: ", xGyro)
-    print("Y-Axis of Rotation: ", yGyro)
-    print("Z-Axis of Rotation: ", zGyro)
-    print("Magnetic field in X-Axis: ", xMag)
-    print("Magnetic field in Y-Axis: ", yMag)
-    print("Magnetic field in Z-Axis: ", zMag)
+        print("Acceleration in X-Axis: ", xAccl)
+        print("Acceleration in Y-Axis: ", yAccl)
+        print("Acceleration in Z-Axis: ", zAccl)
+        print("X-Axis of Rotation: ", xGyro)
+        print("Y-Axis of Rotation: ", yGyro)
+        print("Z-Axis of Rotation: ", zGyro)
+        print("Magnetic field in X-Axis: ", xMag)
+        print("Magnetic field in Y-Axis: ", yMag)
+        print("Magnetic field in Z-Axis: ", zMag)
+        time.sleep(0.5)
