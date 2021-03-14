@@ -55,10 +55,14 @@ def gyro_setup():
 
 def mag_setup():
     try:
-        # BMX055 Mag address, 0x10(16)
-        # Select Mag register, 0x4B(75)
-        #		0x83(121)	Soft reset
-        bus.write_byte_data(mag_address, 0x4B, 0x83)
+        data = bus.read_byte_data(mag_address, 0x4B)
+        if data == 0:
+            # BMX055 Mag address, 0x10(16)
+            # Select Mag register, 0x4B(75)
+            #		0x83(121)	Soft reset
+            bus.write_byte_data(mag_address, 0x4B, 0x83)
+            time.sleep(0.5)
+        bus.write_byte_data(mag_address, 0x4B, 0x01)
         # BMX055 Mag address, 0x10(16)
         # Select Mag register, 0x4C(76)
         #		0x00(00)	Normal Mode, ODR = 10 Hz
@@ -176,4 +180,5 @@ if __name__ == "__main__":
         print("Magnetic field in X-Axis: ", xMag)
         print("Magnetic field in Y-Axis: ", yMag)
         print("Magnetic field in Z-Axis: ", zMag)
-        time.sleep(0.5)
+        print("")
+        time.sleep(1)
