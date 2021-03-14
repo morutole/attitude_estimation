@@ -10,12 +10,13 @@ def connect_raspi():
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(hostname=hostname, port=port, username=username, pkey=key)
-    stdin, stdout, stderr = client.exec_command("ls -al")
+    command = "cd attitude_estimation/raspi_zero_w/bmx055;python3 bmx055.py"
+    stdin, stdout, stderr = client.exec_command(command)
 
     for o in stdout:
-        print("[std]", o, end="")
+        print(o, end="")
     for e in stderr:
-        print("[err]", e, end="")
+        print(e, end="")
 
     client.close()
 
